@@ -1,28 +1,19 @@
 @extends('frontend/layout.app')
 @section('content')
 
-    <!-- Hero Section -->
-    <section class="hero vh-100" style="background-image: url('{{ asset('frontend/images/imgh.png') }}');">
-        <div class="hero-content text-white text-center">
-            <!-- Your hero content goes here -->
-            <h1 class="text-white">Welcome to Our Website</h1>
-            <p>Discover amazing things about us!</p>
-            <!-- Add more hero content as needed -->
-        </div>
-    </section>
-
-    <!-- About Us Section -->
-    <section class="about-us">
+    <div class="container-fluid bg-primary d-flex justify-content-center align-items-center" style="height: 100vh;">
         <div class="container">
-            <div class="row">
-                <div class="col-md-6 offset-md-3 text-center">
-                    <!-- Your About Us content goes here -->
-                    <h2>About Us</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget fermentum turpis, a scelerisque elit.</p>
-                    <!-- Add more About Us content as needed -->
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="text-center">
+                        <a href="{{ route('addresses') }}" class="btn btn-primary mr-2" style="background-color: white; color: #007bff;">Address</a>
+                        <a href="{{ route('frontend.tables.cars') }}" class="btn btn-primary ml-2" style="background-color: white; color: #007bff;">Cars</a>
+
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+
 
 @endsection

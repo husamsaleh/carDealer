@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Navbar</a>
@@ -10,26 +9,32 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
+                @if (!Request::is('/')) <!-- Check if current URL is not the home page -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('addresses')}}">Address</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('frontend.tables.cars')}}">Cars</a>
                 </li>
+                @endif
 
-
-                @if (Route::has('login') && Auth::check())
-                    <li class="nav-item"><a href="{{ route('logout') }}" class="nav-link">Logout</a></li>
-                @elseif (Route::has('login') && !Auth::check())
-                    <li class="nav-item"><a href="{{ url('/login') }}" class="nav-link">Login</a></li>
-                    <li class="nav-item"> <a href="{{ url('/register') }}" class="nav-link">Register</a></li>
-                    @endif
+                @auth <!-- Check if user is authenticated -->
+                <li class="nav-item">
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-link border border-dark rounded" style="background: none; text-decoration: none; cursor: pointer;" >Logout</button>
+                    </form>
+                </li>
+                @else
+                    <li class="nav-item">
+                        <a href="{{ url('/login') }}" class="nav-link">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/register') }}" class="nav-link">Register</a>
+                    </li>
+                @endauth
 
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-primary" type="submit">Search</button>
-            </form>
         </div>
     </div>
 </nav>
