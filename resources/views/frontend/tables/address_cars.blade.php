@@ -23,7 +23,9 @@
                             <td>{{ $car->name }}</td>
                             <td>{{ $car->registrationNum }}</td>
                             <td>{{ $car->yearOfManufacture }}</td>
-                            <!-- Add more columns as needed -->
+                            <td>
+                                <a href="{{ route('frontend.tables.cars.show', ['car' => $car->id]) }}" class="btn btn-primary">View</a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

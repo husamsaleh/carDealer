@@ -58,6 +58,7 @@ class CarController extends Controller
     public function store(Request $request)
     {
         try {
+            // Validate request data
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'registrationNum' => 'required|string|max:255',
@@ -65,20 +66,32 @@ class CarController extends Controller
                 'engine' => 'required|exists:engines,id',
                 'carModel' => 'required|exists:car_models,id',
                 'companyAddress' => 'required|exists:company_addresses,id',
+                'primary_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust validation rule for single image
             ]);
 
-            $car = Car::create([
-                'name' => $request->name,
-                'registrationNum' => $request->registrationNum,
-                'yearOfManufacture' => $request->yearOfManufacture,
-                'engine_id' => $request->engine,
-                'car_model_id' => $request->carModel,
-                'company_address_id' => $request->companyAddress
-            ]);
-           // return dd($car);
+            // Create a new car instance
+            $car = new Car();
+            $car->name = $request->name;
+            $car->registrationNum = $request->registrationNum;
+            $car->yearOfManufacture = $request->yearOfManufacture;
+            $car->engine_id = $request->engine;
+            $car->car_model_id = $request->carModel;
+            $car->company_address_id = $request->companyAddress;
+
+            // Process uploaded primary image
+            if ($request->hasFile('primary_image')) {
+                $photo = $request->file('primary_image');
+                $photoName = 'car_' . uniqid() . '.' . $photo->getClientOriginalExtension(); // Generate unique filename
+                $photo->storeAs('public/images/cars', $photoName); // Store image in storage
+                $car->primary_image = $photoName; // Save unique filename to database
+            }
+
+            $car->save();
+
+            // Redirect with success message
             return redirect('/cars')->with('success', 'Car is successfully created');
-
         } catch (\Exception $e) {
+            // Redirect with error message
             return redirect()->back()->withInput()->with('error', 'Failed to create car. Please try again.');
         }
     }
@@ -86,7 +99,8 @@ class CarController extends Controller
 
 
 
-        public function edit($id)
+
+    public function edit($id)
         {
             $car = Car::findOrFail($id);
             $engines = Engine::all()->map(function ($engine) {

@@ -14,6 +14,7 @@ class Car extends Model
         'name',
         'registrationNum',
         'yearOfManufacture',
+        'primary_image',
         'engine_id',
         'company_address_id',
         'car_model_id',
@@ -40,5 +41,9 @@ class Car extends Model
     public function carModel()
     {
         return $this->belongsTo(CarModel::class, 'car_model_id');
+    }
+    public function images()
+    {
+        return $this->hasMany(CarImage::class);
     }
 }

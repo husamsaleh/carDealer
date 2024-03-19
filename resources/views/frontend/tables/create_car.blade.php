@@ -1,6 +1,7 @@
 @extends("frontend.layout.app")
 
 @section('content')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -8,7 +9,7 @@
                 <div class="card-header">{{ __('Create Car') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('frontend.tables.cars.store') }}">
+                    <form method="POST" action="{{ route('frontend.tables.cars.store') }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group row">
@@ -110,6 +111,15 @@
                             </div>
                         </div>
 
+
+
+
+                        <div class="form-group">
+                            <label for="primary_image">Car Main Image</label>
+                            <input type="file" name="primary_image" id="primary_image" class="form-control-file" required accept="image/*">
+                            <img id="preview_image" src="#" alt="Preview" style="display: none; width: 100px; height: auto;">
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -127,3 +137,18 @@
     </div>
 </div>
 @endsection
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#primary_image').change(function(e){
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#preview_image').attr('src', e.target.result);
+                    $('#preview_image').css('display', 'block');
+                }
+                reader.readAsDataURL(e.target.files[0]);
+            });
+        });
+    </script>
+
+
